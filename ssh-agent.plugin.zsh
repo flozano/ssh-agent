@@ -13,8 +13,11 @@ function _start_agent() {
 
 	# load identies
 	zstyle -a :omz:plugins:ssh-agent identities identities
-
-	ssh-add $HOME/.ssh/${^identities}
+	if [ "$(uname -s)" = "Darwin" ]; then
+		ssh-add -A -K $HOME/.ssh/${^identities}
+	else
+		ssh-add $HOME/.ssh/${^identities}
+	fi
 }
 
 # Get the filename to store/lookup the environment from
